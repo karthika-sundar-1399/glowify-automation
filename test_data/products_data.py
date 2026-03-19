@@ -1,0 +1,1 @@
+PRODUCT_KEYWORDS = ["Niacinamide", "Tea Tree", "Vitamin"]
