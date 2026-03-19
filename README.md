@@ -1,3 +1,33 @@
+# Setup & Usage
+
+### 1. Create and Activate Virtual Environment
+```powershell
+python --version
+python -m venv venv
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+venv\Scripts\Activate.ps1
+```
+
+### 2. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run Tests
+```bash
+python -m pytest -v -s tests/test_e2e_flow.py
+```
+
+### 4. Generate HTML Report
+```bash
+python -m pytest --html=reports/report.html --self-contained-html
+```
+
+### 5. Generate Allure Report
+```bash
+pytest --alluredir=reports/allure-results
+allure serve reports/allure-results
+```
 
 # Glowify Automation Framework
 
