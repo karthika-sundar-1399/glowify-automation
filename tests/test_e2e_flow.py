@@ -1,1 +1,62 @@
-# =====================================================\n# END-TO-END TEST - Full User Shopping Journey Test\n# =====================================================\n# This test automates the complete user flow on the Glowify website\n# It simulates a real customer: browsing -> adding to cart -> checking out -> paying\n# This is the main test of the automation framework\n\n# Import all the Page Object classes we'll need for this test\nfrom pages.home_page import HomePage  # Home page methods\nfrom pages.product_list_page import ProductListPage  # Product list methods\nfrom pages.product_detail_page import ProductDetailPage  # Product detail methods\nfrom pages.cart_page import CartPage  # Shopping cart methods\nfrom pages.login_page import LoginPage  # Login page methods\nfrom pages.signup_page import SignupPage  # Sign up page methods\nfrom pages.checkout_page import CheckoutPage  # Checkout/payment methods\n\n\n# ==================== TEST FUNCTION ====================\n# This is the test that Pytest will run\n# The parameter 'get_driver' is a fixture from conftest.py that provides a browser\ndef test_full_user_journey(get_driver):\n    # Get the web driver (browser) from the fixture\n    driver = get_driver\n\n    # Create instances of all page classes\n    # Each page object handles interactions with one page of the website\n    home = HomePage(driver)  # For home page actions\n    product_list = ProductListPage(driver)  # For product list actions\n    product_detail = ProductDetailPage(driver)  # For individual product actions\n    cart = CartPage(driver)  # For shopping cart actions\n    login = LoginPage(driver)  # For login page actions\n    signup = SignupPage(driver)  # For registration page actions\n    checkout = CheckoutPage(driver)  # For checkout/payment actions\n\n\n    # ==================== STEP 1: BROWSE THE WEBSITE ====================\n    # Open the Glowify website home page\n    home.open()\n\n\n    # ==================== STEP 2: NAVIGATE TO PRODUCT CATEGORY ====================\n    # Hover over Shop menu and select Lipsticks category\n    home.go_to_lipsticks()\n\n\n    # ==================== STEP 3: VIEW A PRODUCT ====================\n    # Click on the first lipstick product in the list\n    product_list.select_first_product()\n\n\n    # ==================== STEP 4: ADD PRODUCT TO CART ====================\n    # Click \"Add to Cart\" button and navigate to the shopping cart\n    product_detail.add_product_to_cart()\n    product_detail.go_to_cart()\n\n\n    # ==================== STEP 5: PROCEED TO CHECKOUT ====================\n    # Click the \"Checkout\" button from the cart page\n    cart.proceed_to_checkout()\n\n\n    # ==================== STEP 6: CHECK LOGIN STATUS ====================\n    # Smart Check: Is the user already logged in?\n    # If not, we need to register a new account\n    if not home.is_logged_in():\n        # User is NOT logged in, so we register a new account\n        \n        # Click the Sign Up link on the login page\n        login.go_to_signup()\n        \n        # Fill in registration form and create a new account\n        signup.register_user()\n\n        # After registration, go back to home page to continue shopping\n        home.open()\n\n        # We need to re-add the product to cart (because registration cleared it)\n        # This is why we go through the shopping flow again\n        home.go_to_lipsticks()  # Navigate to Lipsticks\n        product_list.select_first_product()  # Click first product\n        product_detail.add_product_to_cart()  # Add to cart\n        product_detail.go_to_cart()  # Go to cart\n\n\n    # ==================== STEP 7: PROCEED TO CHECKOUT (Again) ====================\n    # Click the Checkout button to go to the payment page\n    cart.proceed_to_checkout()\n\n\n    # ==================== STEP 8: ENTER DELIVERY DETAILS ====================\n    # Fill in the address, city, state, postal code, etc.\n    checkout.fill_details()\n\n\n    # ==================== STEP 9: SUBMIT THE ORDER ====================\n    # Click \"Place Order\" button to submit the order\n    checkout.place_order_click()\n\n\n    # ==================== STEP 10: VERIFY PAYMENT GATEWAY ====================\n    # Check that the Razorpay (payment gateway) popup appears\n    # This confirms the user is ready to pay\n    checkout.verify_payment_popup()", "oldString": "from pages.home_page import HomePage\nfrom pages.product_list_page import ProductListPage\nfrom pages.product_detail_page import ProductDetailPage\nfrom pages.cart_page import CartPage\nfrom pages.login_page import LoginPage\nfrom pages.signup_page import SignupPage\nfrom pages.checkout_page import CheckoutPage\n\n\ndef test_full_user_journey(get_driver):\n\n    driver = get_driver\n\n    home = HomePage(driver)\n    product_list = ProductListPage(driver)\n    product_detail = ProductDetailPage(driver)\n    cart = CartPage(driver)\n    login = LoginPage(driver)\n    signup = SignupPage(driver)\n    checkout = CheckoutPage(driver)\n\n    # Step 1\n    home.open()\n\n    # Step 2\n    home.go_to_lipsticks()\n\n    # Step 3\n    product_list.select_first_product()\n\n    # Step 4\n    product_detail.add_product_to_cart()\n    product_detail.go_to_cart()\n\n    # Step 5\n    cart.proceed_to_checkout()\n\n    # 🔥 SMART LOGIN CHECK\n    if not home.is_logged_in():\n\n        login.go_to_signup()\n        signup.register_user()\n\n        home.open()\n\n        # Re-add product after signup\n        home.go_to_lipsticks()\n        product_list.select_first_product()\n        product_detail.add_product_to_cart()\n        product_detail.go_to_cart()\n\n    # Step 6\n    cart.proceed_to_checkout()\n\n    # Step 7\n    checkout.fill_details()\n\n    # Step 8\n    checkout.place_order_click()\n\n    # Step 9\n    checkout.verify_payment_popup()"}
+from pages.home_page import HomePage
+from pages.product_list_page import ProductListPage
+from pages.product_detail_page import ProductDetailPage
+from pages.cart_page import CartPage
+from pages.login_page import LoginPage
+from pages.signup_page import SignupPage
+from pages.checkout_page import CheckoutPage
+
+
+def test_full_user_journey(get_driver):
+
+    driver = get_driver
+
+    home = HomePage(driver)
+    product_list = ProductListPage(driver)
+    product_detail = ProductDetailPage(driver)
+    cart = CartPage(driver)
+    login = LoginPage(driver)
+    signup = SignupPage(driver)
+    checkout = CheckoutPage(driver)
+
+    # Step 1
+    home.open()
+
+    # Step 2
+    home.go_to_lipsticks()
+
+    # Step 3
+    product_list.select_first_product()
+
+    # Step 4
+    product_detail.add_product_to_cart()
+    product_detail.go_to_cart()
+
+    # Step 5
+    cart.proceed_to_checkout()
+
+    # 🔥 SMART LOGIN CHECK
+    if not home.is_logged_in():
+
+        login.go_to_signup()
+        signup.register_user()
+
+        home.open()
+
+        # Re-add product after signup
+        home.go_to_lipsticks()
+        product_list.select_first_product()
+        product_detail.add_product_to_cart()
+        product_detail.go_to_cart()
+
+    # Step 6
+    cart.proceed_to_checkout()
+
+    # Step 7
+    checkout.fill_details()
+
+    # Step 8
+    checkout.place_order_click()
+
+    # Step 9
+    checkout.verify_payment_popup()
