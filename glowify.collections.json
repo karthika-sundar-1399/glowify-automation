@@ -1,0 +1,155 @@
+{
+    "info": {
+        "name": "Glowify API Automation",
+        "_postman_id": "b1f6a8c0-1234-4567-890a-glowify",
+        "description": "Automation collection for Glowify APIs",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Login API",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\\n  \\\"username\\\": \\\"your_username\\\",\\n  \\\"password\\\": \\\"your_password\\\"\\n}"
+                },
+                "url": {
+                    "raw": "https://glowify-cosmetics-site.onrender.com/accounts/login/",
+                    "protocol": "https",
+                    "host": [
+                        "glowify-cosmetics-site",
+                        "onrender",
+                        "com"
+                    ],
+                    "path": [
+                        "accounts",
+                        "login",
+                        ""
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "let jsonData = pm.response.json();",
+                            "pm.environment.set(\"auth_token\", jsonData.token);"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Add to Cart",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{auth_token}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\\n  \\\"product_id\\\": 1,\\n  \\\"quantity\\\": 1\\n}"
+                },
+                "url": {
+                    "raw": "https://glowify-cosmetics-site.onrender.com/shop/add-to-cart/",
+                    "protocol": "https",
+                    "host": [
+                        "glowify-cosmetics-site",
+                        "onrender",
+                        "com"
+                    ],
+                    "path": [
+                        "shop",
+                        "add-to-cart",
+                        ""
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Get Cart",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{auth_token}}"
+                    }
+                ],
+                "url": {
+                    "raw": "https://glowify-cosmetics-site.onrender.com/shop/cart/",
+                    "protocol": "https",
+                    "host": [
+                        "glowify-cosmetics-site",
+                        "onrender",
+                        "com"
+                    ],
+                    "path": [
+                        "shop",
+                        "cart",
+                        ""
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Create Order",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{auth_token}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\\n  \\\"address\\\": \\\"Chennai\\\",\\n  \\\"payment_method\\\": \\\"COD\\\"\\n}"
+                },
+                "url": {
+                    "raw": "https://glowify-cosmetics-site.onrender.com/shop/create-order/",
+                    "protocol": "https",
+                    "host": [
+                        "glowify-cosmetics-site",
+                        "onrender",
+                        "com"
+                    ],
+                    "path": [
+                        "shop",
+                        "create-order",
+                        ""
+                    ]
+                }
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "auth_token",
+            "value": ""
+        }
+    ]
+}

@@ -1,1 +1,1 @@
-PRODUCT_KEYWORDS = ["Niacinamide", "Tea Tree", "Vitamin"]
+PRODUCT_KEYWORDS = ["Niacinamide", "Tea Tree", "Vitamin"]  # List of product keywords used for testing product search and filtering functionality
